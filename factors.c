@@ -1,23 +1,32 @@
-#include <stdio.h>
+#include "factors.h"
+#include <iostream>
+#include <fstream>
+#include <cmath>
 
-int main()
-{
-    long long int num = 239809320265259;
-    long int factor1 = 2;
-    long int factor2;
-
-    while (num % factor1)
-    {
-        if (factor1 <= num)
-        {
-            factor1++;
-        }
-        else {
-            return (-1);
+std::vector<std::pair<int, int>> factorize(int number) {
+    std::vector<std::pair<int, int>> factors;
+    for (int i = 2; i <= sqrt(number); ++i) {
+        if (number % i == 0) {
+	    factors.emplace_back(i, number / i);
         }
     }
+    return factors;
+}
 
-    factor2 = num / factor1;
-    printf("%lld = %ld * %ld\n", num, factor2, factor1);
-    return (0);
+
+void factorize_file(const std::string& file_path) {
+    std::ifstream file(file_path);
+    if (!file) {
+        std::cerr << "Failed to open the file: " << file_path << std::endl;
+        return;
+    }
+
+    int number;
+    while (file >> number) {
+        std::vector<std::pair<int, int>> factors = factorize(number);
+        for (const auto& factor : factors)
+        {
+            std::cout << number << " = " << factor.first << " * " << factor.second << std::endl;
+        }
+    }
 }

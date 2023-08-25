@@ -1,18 +1,29 @@
 #!/usr/bin/python3
-"""factorize given set of numbers in a file to product of two small numbers"""
+import sys
 from sys import argv
 
+def factorize(value):
 
-def factorize(number_to_check):
-
+    """
+    # Factorize as many numbers as possible into..
+    # ..a product of two smaller numbers.
+    # VARIABLE(" "):
+    # factorize(int) Factorize all the things!
+    # Usage: factors <file>
+    # Output format: n=p*q
+    """
     i = 2
 
-    if number_to_check < 2:
+    if value < 2:
         return
-    
-    while number_to_check % i:
+    print()
+    print(value, "<- ")
+    while value % i:
         i += 1
-    print("{:.0f}={:.0f}*{:.0f}".format(number_to_check, number_to_check / i, i))
+    print("{:.0f}={:.0f}*{:.0f}".format(value, value / i, i))
+    print()
+    print(value, "<- ")
+
 
 if len(argv) != 2:
     exit()
@@ -22,8 +33,13 @@ try:
         line = file.readline()
 
         while line != "":
-            number_to_check = int(line.split('\n')[0])
-            factorize(number_to_check)
+            value = int(line.split('\n')[0])
+            factorize(value)
             line = file.readline()
-except:
+except FileNotFoundError:
+    print(f'File not found: {argv}')
+except ValueError:
+    print(f'Invalid input in the file: {argv}')
+except Exception as e:
+    print(f'An error occurred: {str(e)}')
     pass

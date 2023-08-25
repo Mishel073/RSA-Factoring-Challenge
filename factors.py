@@ -1,27 +1,44 @@
 #!/usr/bin/python3
 import sys
+import time
+import math
+
+def factorize_number(num):
+    factors = []
+    divisor = 2
+
+    while num > 1:
+        if num % divisor == 0:
+            factors.append(str(divisor))
+            num //= divisor
+
+        else:
+            divisor += 1
+
+    return '*'.join(factors)
 
 
-def factorize(num):
-    """ Generate 2 factors for a given number"""
-    factor1 = 2
-    while (num % factor1):
-        if (factor1 <= num):
-            factor1 += 1
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: python3 factors.py <filename>")
+        return
 
-    factor2 = num // factor1
-    return (factor2, factor1)
+    filename = sys.argv[1]
+
+    try:
+        with open(filename, 'r') as file:
+            for line in file:
+                number = int(line.strip())
+                factorization = factorize_number(number)
+                print(f"{number}={factorization}")
+
+    except FileNotFoundError:
+        print(f"File '{filename}' not found.")
+    except ValueError:
+        print("Invalid format. file must contains only natural numbers.")
+    except Exception as e:
+        print("An error occurred:", str(e))
 
 
-if len(sys.argv) != 2:
-    sys.exit(f"Wrong usage: {sys.argv[0]} <file_path>")
-
-filename = sys.argv[1]
-
-file = open(filename, 'r')
-lines = file.readlines()
-
-for line in lines:
-    num = int(line.rstrip())
-    factor2, factor1 = factorize(num)
-    print(f"{num} = {factor2} * {factor1}")
+if __name__ == "__main__":
+    main()
